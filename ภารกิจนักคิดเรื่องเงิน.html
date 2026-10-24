@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ภารกิจนักคิดเรื่องเงิน</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff1b8;--card:#fff;--ink:#2b2350;--pri:#ff7a3d;--ok:#d9f7e3;--okb:#2fb35e;--bad:#ffe0e3;--badb:#e8505b;--soft:#e8f2ff;--line:#ffc94d;--hint:#fff3c4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241f45;--card:#352f63;--ink:#fff8e1;--ok:#1f5a3a;--bad:#6a2a3a;--soft:#2b2656;--line:#6a5fb5;--hint:#5a4d1f}}
+:root[data-theme="dark"]{--bg:#241f45;--card:#352f63;--ink:#fff8e1;--ok:#1f5a3a;--bad:#6a2a3a;--soft:#2b2656;--line:#6a5fb5;--hint:#5a4d1f}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Mali','Noto Sans Thai','Sarabun',Tahoma,sans-serif;font-size:20px;line-height:1.5}
+#top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:8px 12px;background:var(--pri);color:#fff;font-weight:700}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--pri);z-index:10}
+#top button{font:inherit;border:0;border-radius:12px;padding:4px 12px;background:#fff;color:#2b2350;cursor:pointer}
+#app{max-width:820px;margin:0 auto;padding:14px}
+.hero{text-align:center}.mas{font-size:72px}
+h1{font-size:clamp(30px,7vw,46px);margin:4px 0;line-height:1.2}
+h2{font-size:clamp(22px,4.5vw,28px);margin:8px 0}
+.bub{background:var(--soft);border:3px solid var(--line);border-radius:20px;padding:10px 16px;margin:10px auto;max-width:560px;text-align:center}
+.map{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0}
+.lv{position:relative;font:inherit;color:inherit;background:var(--card);border:4px solid var(--line);border-radius:22px;padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-height:130px}
+.lv span{font-size:40px}.lv small{font-size:16px}.lv i{position:absolute;top:4px;right:8px;font-size:26px;font-style:normal}
+.lv:not(.lock):hover{transform:scale(1.04)}.lv.lock{opacity:.5;cursor:not-allowed}
+.card{background:var(--card);border:4px solid var(--line);border-radius:26px;padding:16px;margin-top:10px}
+.prog{display:flex;gap:10px;align-items:center;font-weight:700}
+.bar{flex:1;height:14px;background:var(--soft);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--okb);transition:width .4s}
+.btn{font:inherit;font-weight:700;font-size:22px;min-height:56px;padding:8px 22px;margin:8px 6px 0 0;border:0;border-radius:18px;background:var(--pri);color:#fff;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.btn.alt{background:#6c5ce7}.btn:active{transform:translateY(3px);box-shadow:none}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.opt{font:inherit;font-weight:700;font-size:22px;min-height:64px;color:inherit;background:var(--soft);border:4px solid var(--line);border-radius:18px;cursor:pointer;padding:6px}
+.opt:hover{transform:scale(1.03)}.opt.right{background:var(--ok);border-color:var(--okb)}.opt.wrong{background:var(--bad);border-color:var(--badb);opacity:.7}.opt.sel{border-color:#6c5ce7;background:#ddd6ff;color:#2b2350}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.mt>div{display:grid;gap:10px;align-content:start}
+.row,.tray{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:8px 0}
+.tray{min-height:84px;border:4px dashed var(--line);border-radius:18px;padding:6px;background:var(--soft)}
+.pick{cursor:pointer;display:inline-block}.pick:active{transform:scale(.92)}.ph{opacity:.6}
+.pl{font-size:30px}.sum{text-align:center;font-weight:700;font-size:24px}.lbl{font-weight:700;margin-top:8px}
+.vis{margin:6px 0}
+.mny{display:block}
+.inrow{display:flex;gap:8px;align-items:center;margin:8px 0;flex-wrap:wrap}
+input{font:inherit;font-size:22px;width:130px;padding:8px;border:4px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink)}
+input.good{border-color:var(--okb);background:var(--ok)}input.bad{border-color:var(--badb);background:var(--bad)}
+.shelf{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.item{font:inherit;color:inherit;background:var(--soft);border:3px solid var(--line);border-radius:16px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-size:18px}
+.item span{font-size:36px}.item small{font-weight:700}
+.wal{font-size:24px;text-align:center}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{border:3px solid var(--line);padding:4px;text-align:center;font-size:18px}th{background:var(--soft)}td input{width:96px;font-size:18px;padding:4px}
+.inc{color:#1b8a4a;font-weight:700}.exp{color:#d03a46;font-weight:700}
+.fb{min-height:20px;margin-top:8px;font-weight:700;border-radius:16px;padding:0}.fb.good,.fb.bad,.fb.hint{padding:10px 14px}
+.fb.good{background:var(--ok);animation:pop .5s}.fb.bad{background:var(--bad)}.fb.hint{background:var(--hint)}
+.shk{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+.big{font-size:60px;text-align:center}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-weight:700;margin:10px 0}.stats div{background:var(--soft);border-radius:14px;padding:8px;text-align:center}
+@media(max-width:480px){body{font-size:18px}.opt{font-size:19px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+body{background-image:radial-gradient(rgba(255,255,255,.55) 3px,transparent 4px),linear-gradient(var(--bg),var(--bg));background-size:38px 38px,auto}
+#top{background:linear-gradient(90deg,#ff7a3d,#e84393);font-size:19px;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+body::before{background:#ff7a3d}
+h1{background:linear-gradient(90deg,#ff7a3d,#e84393,#6c5ce7);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-size:clamp(32px,8vw,54px)}
+.mas{display:inline-block;animation:bnc 1.6s ease-in-out infinite}
+@keyframes bnc{50%{transform:translateY(-12px) rotate(4deg)}}
+.map{grid-template-columns:repeat(auto-fit,minmax(135px,1fr))}
+.lv{border-color:var(--c,#ffc94d);box-shadow:0 7px 0 var(--c,#ffc94d);transition:transform .15s}
+.lv span{width:66px;height:66px;border-radius:50%;background:var(--c,#ffc94d);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:4px}
+.lv b{font-size:22px}
+.lv:nth-child(1){--c:#4cc46f}.lv:nth-child(2){--c:#f5c518}.lv:nth-child(3){--c:#ff9a3d}.lv:nth-child(4){--c:#4a8fe0}.lv:nth-child(5){--c:#9a6bd6}.lv:nth-child(6){--c:#e5605a}.lv:nth-child(7){--c:#e8a317}
+.lv.lock{filter:grayscale(1)}
+.card{box-shadow:0 8px 0 var(--line);border-radius:30px}
+h2{line-height:1.35}
+.vis{background:var(--soft);border-radius:20px;padding:6px;border:3px dashed var(--line)}.vis:empty{display:none}
+.mny{filter:drop-shadow(0 3px 2px rgba(0,0,0,.3))}
+.btn{background:linear-gradient(#ff9a5a,#ff6a2a)}.btn.alt{background:linear-gradient(#8d7dff,#5b4bd6)}
+.opt{box-shadow:0 5px 0 var(--line);font-size:24px;min-height:70px}
+.opt.right{box-shadow:0 5px 0 var(--okb)}
+.bub{position:relative;font-size:21px}
+.cf{position:fixed;top:-30px;font-size:28px;pointer-events:none;z-index:50;animation:fall 1.4s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.2}}
+</style></head><body>
+<div id="top"></div><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[R(0,a.length-1)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const num=s=>s%100?(s/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):(s/100).toLocaleString('en-US');
+const th=s=>num(s)+' บาท';
+const lab=s=>s<100?s+' สตางค์':th(s);
+const bs=s=>{const b=Math.floor(s/100),t=s%100;return((b?b+' บาท':'')+(b&&t?' ':'')+(t?t+' สตางค์':''))||'0 บาท'};
+const COIN={25:['#c98a43',48,'25','สต.'],50:['#c98a43',54,'50','สต.'],100:['#d8dce2',58,'1','บาท'],200:['#d99a55',62,'2','บาท'],500:['#d8dce2',68,'5','บาท'],1000:['#e8c25a',74,'10','บาท']};
+const NOTE={2000:'#5fb36b',5000:'#4a8fe0',10000:'#e5605a',50000:'#9a6bd6',100000:'#b0804f'};
+const ALL=[25,50,100,200,500,1000,2000,5000,10000,50000,100000];
+function money(v){
+ if(COIN[v]){const[c,d,t,u]=COIN[v],w=d+8,h=w/2;return`<svg class="mny" width="${w}" height="${w}" viewBox="0 0 ${w} ${w}" role="img" aria-label="${lab(v)}"><circle cx="${h}" cy="${h}" r="${d/2}" fill="${c}" stroke="#7a6a50" stroke-width="3"/><circle cx="${h}" cy="${h}" r="${d/2-5}" fill="none" stroke="#fff8" stroke-width="2" stroke-dasharray="3 3"/><text x="${h}" y="${h+2}" text-anchor="middle" font-size="${d/2.3}" font-weight="700" fill="#3d2f15">${t}</text><text x="${h}" y="${h+d/4+4}" text-anchor="middle" font-size="${d/5.5}" font-weight="700" fill="#3d2f15">${u}</text></svg>`}
+ return`<svg class="mny" width="132" height="72" viewBox="0 0 132 72" role="img" aria-label="${lab(v)}"><rect x="3" y="3" width="126" height="66" rx="9" fill="${NOTE[v]}" stroke="#fff" stroke-width="3"/><circle cx="30" cy="36" r="17" fill="#fff5"/><text x="96" y="34" text-anchor="middle" font-size="${v>=100000?24:28}" font-weight="700" fill="#fff" stroke="#0005" stroke-width="3" paint-order="stroke">${(v/100).toLocaleString('en-US')}</text><text x="96" y="55" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" stroke="#0005" stroke-width="3" paint-order="stroke">บาท</text></svg>`}
+function mcOpts(a,step,f){const c=new Set([a]);for(const x of shuf([-3,-2,-1,1,2,3])){const v=a+x*step;if(v>0&&c.size<4)c.add(v)}const arr=shuf([...c]);return{opts:arr.map(f),ans:arr.indexOf(a)}}
+const ITEMS=[['🍎','แอปเปิล',1000],['🥛','นม',1250],['🍞','ขนมปัง',1500],['🧃','น้ำผลไม้',850],['✏️','ดินสอ',500],['📒','สมุด',2000]];
+const sumTxt=a=>a.map(money).join('<b class="pl">+</b>');
+const H1='จำไว้นะ 1 บาท มี 100 สตางค์';
+
+/* ---------- ตัวสร้างโจทย์ ---------- */
+function gL1(i,c){c.co=c.co||shuf([25,50,100,200,500,1000]);c.no=c.no||shuf([2000,5000,10000,50000,100000]);
+ const coin=i<3,v=coin?c.co[i]:c.no[i-3],pool=coin?[25,50,100,200,500,1000]:[2000,5000,10000,50000,100000];
+ const o=shuf([v,...shuf(pool.filter(x=>x!==v)).slice(0,3)]);
+ return{t:'mc',text:coin?'เหรียญนี้มีค่าเท่าไร?':'ธนบัตรนี้มีค่าเท่าไร?',vis:`<div class="row">${money(v)}</div>`,opts:o.map(lab),ans:o.indexOf(v),hint:coin?'ดูตัวเลขบนเหรียญให้ดีนะ เหรียญสตางค์มีค่าน้อยกว่า 1 บาท':'ดูตัวเลขบนธนบัตรอีกครั้งนะ ธนบัตรแต่ละสีมีค่าไม่เหมือนกัน'}}
+function gL2(i){
+ if(i===4){const t=R(11,45)*100;return{t:'drag',text:`หยิบเงินใส่ถาดให้ได้ ${th(t)} พอดี`,ans:t,pal:[2000,1000,500,200,100],hint:'เริ่มจากเงินที่มีค่ามากก่อน แล้วค่อยเติมเงินที่มีค่าน้อยลง'}}
+ let a;const hard=i>=2;
+ if(i===0){do{a=Array.from({length:R(2,4)},()=>pick([100,200,500,1000]))}while(sum(a)>2000)}
+ else if(i===1){do{a=Array.from({length:R(3,5)},()=>pick([5000,2000,1000,500,200,100]))}while(sum(a)<2100||sum(a)>10000)}
+ else a=shuf([...Array.from({length:R(1,2)},()=>pick([100,200,500,1000])),pick([25,50]),pick([25,50])]);
+ const s=sum(a),m=mcOpts(s,hard?25:100,hard?bs:th);
+ return{t:'mc',text:hard?'มีเงินทั้งหมดเท่าไร?':'มีเงินทั้งหมดกี่บาท?',vis:`<div class="row">${sumTxt(a)}</div>`,...m,hint:hard?'รวมเหรียญบาทก่อน แล้วรวมเหรียญสตางค์ ถ้าสตางค์ครบ 100 จะเป็น 1 บาท':'นับเงินที่มีค่ามากก่อน แล้วค่อยบวกเงินที่เหลือทีละอัน'}}
+function gL3(i,c){
+ if(i<3){c.v=c.v||shuf([25,50,75,125,150,175,225,250,275,325,350]);const v=c.v[i],m=mcOpts(v,25,th);
+  return{t:'mc',text:`${v} สตางค์ เขียนเป็นบาทได้เท่าไร?`,...m,hint:H1+' แล้วเขียนหลังจุดทศนิยม'}}
+ const vs=shuf([25,50,75,125,150,175,225,250,275]).slice(0,4);
+ return{t:'match',text:'จับคู่ จำนวนเงิน กับ รูปแบบทศนิยม ให้ถูกต้อง (แตะซ้ายแล้วแตะขวา)',pairs:vs.map(v=>[v+' สตางค์',num(v)+' บาท']),hint:H1+' เช่น 50 สตางค์ = 0.50 บาท'}}
+function gL4(i){
+ const hint='หน้าจุดคือบาท หลังจุดคือสตางค์ เช่น 5 บาท 50 สตางค์ = 5.50 บาท';
+ const b=R(1,30),s=pick([25,50,75]);
+ if(i<2){const m=mcOpts(b*100+s,25,th);return{t:'mc',text:`แม่ให้เงิน ${b} บาท ${s} สตางค์ ควรเขียนเป็นจำนวนเงินเท่าใด?`,...m,hint}}
+ if(i===2)return{t:'in',text:`แม่ให้เงิน ${b} บาท ${s} สตางค์ ควรเขียนเป็นจำนวนเงินเท่าใด? (พิมพ์ตัวเลขที่มีจุด)`,ans:b*100+s,hint};
+ if(i===3){const w=pick([20,30,40,50,60]);return{t:'in',text:`เขียน ${w} บาท ให้มีจุดทศนิยมสองตำแหน่ง เช่น 20.00`,ans:w*100,hint:'ไม่มีสตางค์ ก็เขียน .00 ต่อท้ายได้เลย'}}
+ return{t:'in',text:`ซื้อขนม ${b} บาท ${s} สตางค์ เขียนเป็นจำนวนเงินได้เท่าใด? (พิมพ์ตัวเลขที่มีจุด)`,ans:b*100+s,hint};}
+function gL5(i){
+ const hint='เงินทอน = เงินที่มี − เงินที่จ่าย';
+ if(i===2){const k=R(0,5),p=ITEMS[k][2],M=pick([2000,5000,10000].filter(x=>x>p)),m=mcOpts(M-p,p%100?50:100,th);
+  return{t:'mc',text:`มีเงิน ${th(M)} ซื้อ ${ITEMS[k][0]} ${ITEMS[k][1]} ราคา ${th(p)} ได้เงินทอนเท่าไร?`,vis:`<div class="row">${money(M)}</div>`,...m,hint}}
+ const tg=i<2?shuf([0,2,4,5]).slice(0,2):shuf([pick([1,3]),pick([0,2,4,5])]),M=pick([5000,10000]),tot=sum(tg.map(k=>ITEMS[k][2]));
+ return{t:'shop',text:`มีเงิน ${th(M)} ซื้อ ${tg.map(k=>ITEMS[k][0]+' '+ITEMS[k][1]).join(' และ ')} (แตะสินค้าใส่ตะกร้า) แล้วหาว่าต้องจ่ายเท่าไร เหลือเงินทอนเท่าไร`,M,tg,tot,ch:M-tot,hint}}
+function mkLed(S0,ev,full,pre,hint){
+ const rows=[{day:'วันที่ 1',item:'เริ่มต้นมีเงิน',inc:S0}];let b=S0;
+ ev.forEach((e,k)=>{rows.push({day:'วันที่ '+(1+((k+1)>>1)),item:e[0],inc:e[1]==='i'?e[2]:0,exp:e[1]==='e'?e[2]:0})});
+ rows.forEach(r=>{b+=(r===rows[0]?0:(r.inc||0)-(r.exp||0));r.bal=b});
+ const story='เริ่มต้นมีเงิน '+th(S0)+' '+ev.map(e=>e[0]+' '+th(e[2])).join(' ');
+ return{t:'led',full,rows,text:pre+story+(full?' กรอกรายรับ รายจ่าย และคงเหลือในตารางให้ครบ':' กรอกเงินคงเหลือในตาราง แล้วดูว่าเหลือเงินเท่าไร (ช่องคงเหลือบรรทัดสุดท้าย)'),hint}}
+function gL6(i,c){
+ if(i<2){const inc=['ได้รับเงินจากแม่','คุณยายให้เงิน','ขายของได้'],exp=['ซื้อขนม','ซื้อน้ำ','ซื้อสมุด','ซื้อดินสอ'];
+  if(i===0)c.k=Math.random()<.5;const isI=i===0?c.k:!c.k;
+  return{t:'mc',text:`“${pick(isI?inc:exp)} ${th(pick([500,1000,1500,2000,5000]))}” เป็นรายรับหรือรายจ่าย?`,opts:['📥 รายรับ','📤 รายจ่าย'],ans:isI?0:1,hint:'รายรับคือเงินที่ได้เข้ามา รายจ่ายคือเงินที่จ่ายออกไป'}}
+ const ex=shuf(['ซื้อขนม','ซื้อน้ำ','ซื้อสมุด','ซื้อดินสอ']).slice(0,i===4?3:2).map(n=>[n,'e',pick([500,1000,1500,2000])]);
+ return mkLed(pick([5000,10000]),[['ได้รับเงินจากแม่','i',pick([2000,3000,5000])],...ex],false,'','คงเหลือ = เงินก่อนหน้า + รายรับ − รายจ่าย');}
+function gL7(i){
+ const N=pick(['น้องต้น','น้องฟ้า','น้องมะลิ','น้องกล้า']),hint='บวกเงินที่ได้เพิ่มก่อน แล้วลบเงินที่จ่ายทีละรายการ';
+ const pl=i===0?[500,1000,1500,2000]:[500,1000,1250,1500,850,2000],a=pick(pl),b=pick(pl),r=pick([1000,2000,3000]);
+ if(i<3){const S0=pick([5000,8000,10000]),F=S0+r-a-b,m=mcOpts(F,i===0?100:50,th);
+  return{t:'mc',text:`วันนี้${N}มีเงิน ${th(S0)} ได้รับเงินเพิ่ม ${th(r)} ซื้อขนม ${th(a)} ซื้อดินสอ ${th(b)} ${N}เหลือเงินเท่าไร?`,...m,hint}}
+ const ex=shuf(['ซื้อขนม','ซื้อน้ำ','ซื้อสมุด','ซื้อดินสอ']).slice(0,3).map(n=>[n,'e',pick(pl)]);
+ return mkLed(pick([8000,10000]),[['ได้รับเงินเพิ่ม','i',r],...ex],true,`${N}บันทึกรายรับ–รายจ่าย: `,'รายรับเขียนในช่องรายรับ รายจ่ายเขียนในช่องรายจ่าย คงเหลือ = เงินก่อนหน้า + รายรับ − รายจ่าย');}
+const LV=[
+ {e:'🟢',n:'รู้จักเหรียญและธนบัตร',gen:gL1,intro:'แตะเงินแต่ละชนิดเพื่อดูว่ามีค่าเท่าไร แล้วไปตอบคำถามกัน!',gal:1},
+ {e:'🟡',n:'รวมจำนวนเงิน',gen:gL2,intro:'นำเงินหลายอย่างมารวมกัน ข้อสุดท้ายให้ลากหรือแตะเงินใส่ถาด'},
+ {e:'🟠',n:'บาทและสตางค์',gen:gL3,intro:'1 บาท = 100 สตางค์<br>50 สตางค์ = 0.50 บาท • 25 สตางค์ = 0.25 บาท'},
+ {e:'🔵',n:'เขียนจำนวนเงินด้วยจุด',gen:gL4,intro:'เขียนเงินด้วยจุด: 5 บาท 50 สตางค์ = 5.50 บาท หน้าจุดคือบาท หลังจุดคือสตางค์'},
+ {e:'🟣',n:'ซื้อของและเงินทอน',gen:gL5,intro:'ไปร้านค้ากัน! เลือกซื้อของ คิดเงินที่ต้องจ่าย และเงินทอน'},
+ {e:'🔴',n:'บันทึกรายรับ–รายจ่าย',gen:gL6,intro:'รายรับ = เงินที่ได้เข้ามา รายจ่าย = เงินที่จ่ายออกไป ลองบันทึกลงตารางกัน'},
+ {e:'🏆',n:'นักบัญชีตัวน้อย',gen:gL7,intro:'ด่านสุดท้าย! อ่านเรื่องราว คิดเงินคงเหลือ และบันทึกตารางเต็มรูปแบบ'}];
+
+/* ---------- สถานะ ---------- */
+let S={unlocked:1,best:{},sound:true},run=null;
+const cq=()=>run.qs[run.i];
+function total(){let t=0;for(const l in S.best)if(!run||+l!==run.l)t+=S.best[l].pts;return t+(run?run.pts:0)}
+function updTop(){$('#top').innerHTML=`<span>⭐ คะแนน: ${total()}/350</span><span>🏆 ด่าน: ${Object.keys(S.best).length}/7</span><span><button onclick="toggleSound()" aria-label="เสียง">${S.sound?'🔊':'🔇'}</button> <button onclick="home()">🏠 หน้าแรก</button></span>`}
+function toggleSound(){S.sound=!S.sound;updTop()}
+let AC;function beep(g){if(!S.sound)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),a=AC.createGain();o.connect(a);a.connect(AC.destination);o.frequency.value=g?880:220;a.gain.value=.08;o.start();o.stop(AC.currentTime+(g?.25:.3))}catch(e){}}
+function fb(k,t){const f=$('#fb');f.className='fb '+k;f.textContent=t}
+
+/* ---------- หน้าจอ ---------- */
+function home(){run=null;
+ app.innerHTML=`<div class="hero"><div class="mas">🧒🛒</div><h1>ภารกิจนักคิดเรื่องเงิน 💰</h1><div class="bub">สวัสดี! ครูจองซ่าจะพาไปเล่นกับเงิน เลือกด่านได้เลย!</div></div><div class="map">`+
+ LV.map((v,k)=>{const l=k+1,lock=l>S.unlocked,b=S.best[l];return`<button class="lv ${lock?'lock':''}" ${lock?'disabled':''} onclick="intro(${l})"><span>${lock?'🔒':v.e}</span><b>ด่าน ${l}</b><small>${v.n}</small>${b?'<i>'+['','🥉','🥈','🥇'][b.m]+'</i>':''}</button>`}).join('')+`</div>`+
+ (Object.keys(S.best).length?`<button class="btn" onclick="summary()">📊 ดูสรุปผล</button><button class="btn alt" onclick="resetAll()">🔄 เริ่มใหม่ทั้งหมด</button>`:'');updTop()}
+function resetAll(){S.unlocked=1;S.best={};home()}
+function intro(l){const v=LV[l-1];run=null;
+ app.innerHTML=`<div class="card"><div class="big">${v.e}</div><h2 style="text-align:center">ด่าน ${l}: ${v.n}</h2><div class="bub">🧒 ${v.intro}</div>`+
+ (v.gal?`<div class="row">${ALL.map(x=>`<span class="pick" onclick="gl(${x})">${money(x)}</span>`).join('')}</div><div id="gl" class="bub">👆 แตะเงินเพื่อดูค่า</div>`:'')+
+ `<button class="btn" onclick="start(${l})">▶ เริ่มเลย!</button><button class="btn alt" onclick="home()">⬅ กลับ</button></div>`;updTop()}
+function gl(v){$('#gl').textContent='💡 '+(COIN[v]?'เหรียญ ':'ธนบัตร ')+lab(v)}
+function start(l){run={l,i:0,pts:0,first:0,wrong:0,qs:[]};const c={};for(let i=0;i<5;i++)run.qs.push(LV[l-1].gen(i,c));show()}
+function show(){const q=cq(),v=LV[run.l-1];
+ app.innerHTML=`<div class="card"><div class="prog">${v.e} ด่าน ${run.l} • ข้อ ${run.i+1}/5<span class="bar"><i style="width:${run.i*20}%"></i></span></div><h2>${q.text}</h2><div class="vis">${q.vis||''}</div><div id="body"></div><div id="fb" class="fb"></div><div><button id="hb" class="btn alt" hidden onclick="hint()">💡 ขอคำใบ้</button><button id="nb" class="btn" hidden onclick="next()">ข้อต่อไป ➡️</button></div></div>`;
+ BODY[q.t](q);updTop()}
+function burst(){for(let i=0;i<16;i++){const e=document.createElement("span");e.className="cf";e.textContent=pick(["⭐","🪙","✨","🎉","💰"]);e.style.left=R(2,95)+"%";e.style.animationDelay=(R(0,40)/100)+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}}
+function ok(){const q=cq();if(q.done)return;q.done=1;burst();if(!q.tried)run.first++;run.pts+=10;fb('good','⭐ เก่งมาก! +10 คะแนน');beep(1);$('#nb').hidden=false;$('#hb').hidden=true;$('#nb').textContent=run.i<4?'ข้อต่อไป ➡️':'ดูผลด่าน 🎉';updTop()}
+function bad(m){const q=cq();if(q.done)return;if(!q.tried){q.tried=1;run.wrong++}fb('bad','ยังไม่ถูกนะ ลองใหม่อีกครั้ง 💪 '+(m||''));beep(0);$('#hb').hidden=false;const b=$('#body');b.classList.remove('shk');void b.offsetWidth;b.classList.add('shk')}
+function hint(){fb('hint','💡 '+cq().hint)}
+function next(){run.i++;run.i<5?show():finish()}
+function finish(){const l=run.l,m=run.first>=5?3:run.first>=3?2:1;
+ S.best[l]={pts:run.pts,first:run.first,wrong:run.wrong,m};if(l<7)S.unlocked=Math.max(S.unlocked,l+1);run=null;updTop();
+ app.innerHTML=`<div class="card"><div class="big">${['','🥉','🥈','🥇'][m]}</div><h2 style="text-align:center">ผ่านด่าน ${l} แล้ว! ได้เหรียญรางวัล 🏅</h2><div class="stats"><div>⭐ ${S.best[l].pts}/50 คะแนน</div><div>✅ ตอบถูกครั้งแรก ${S.best[l].first}/5 ข้อ</div></div><div style="text-align:center">`+
+ (l<7?`<button class="btn" onclick="intro(${l+1})">ด่านต่อไป ▶</button>`:`<button class="btn" onclick="summary()">📊 ดูสรุปผล</button>`)+`<button class="btn alt" onclick="intro(${l})">🔁 เล่นซ้ำด่านนี้</button><button class="btn alt" onclick="home()">🏠 เลือกด่าน</button></div></div>`}
+function summary(){run=null;let p=0,f=0,w=0,n=0;const medals=[];for(const l in S.best){const b=S.best[l];p+=b.pts;f+=b.first;w+=b.wrong;n+=5;medals.push(['','🥉','🥈','🥇'][b.m])}
+ const pc=n?f/n*100:0,lv=pc>=90?'ยอดเยี่ยม 🌟':pc>=70?'ดีมาก 😊':pc>=50?'ดี 🙂':'ควรฝึกเพิ่ม 💪',all=Object.keys(S.best).length===7;updTop();
+ app.innerHTML=`<div class="card"><div class="big">🎓</div><h2 style="text-align:center">${all?'ยอดเยี่ยม! นักคิดเรื่องเงินตัวน้อย':'สรุปผลระหว่างเล่น'}</h2><div class="stats"><div>⭐ คะแนนรวม<br>${p}/350</div><div>✅ ตอบถูกครั้งแรก<br>${f} ข้อ</div><div>❌ ข้อที่ตอบผิดก่อน<br>${w} ข้อ</div><div>📈 ระดับ<br>${lv}</div></div><div class="bub">เหรียญรางวัล: ${medals.join(' ')||'-'}</div><div style="text-align:center"><button class="btn" onclick="home()">🏠 เลือกด่าน (เล่นซ้ำได้)</button><button class="btn alt" onclick="resetAll()">🔄 เริ่มใหม่ทั้งหมด</button></div></div>`}
+
+/* ---------- ประเภทโจทย์ ---------- */
+const BODY={};
+BODY.mc=q=>{$('#body').innerHTML='<div class="opts">'+q.opts.map((o,k)=>`<button class="opt" onclick="pickMC(${k},this)">${o}</button>`).join('')+'</div>'};
+function pickMC(k,b){const q=cq();if(q.done)return;if(k===q.ans){b.classList.add('right');ok()}else{b.classList.add('wrong');b.disabled=true;bad()}}
+BODY.in=q=>{$('#body').innerHTML='<div class="inrow"><input id="ai" inputmode="decimal" autocomplete="off" placeholder="พิมพ์ที่นี่"> บาท</div><button class="btn" onclick="chkIn()">✅ ตรวจคำตอบ</button>'};
+const cell=s=>{s=String(s).trim().replace(/,/g,'');return s===''||s==='-'?0:Number(s)};
+function chkIn(){const q=cq();if(q.done)return;const s=$('#ai').value.trim().replace(/,/g,'');if(s===''||isNaN(Number(s)))return fb('hint','💡 พิมพ์ตัวเลขก่อนนะ');Math.round(Number(s)*100)===q.ans?(ok(),$('#ai').classList.add('good')):bad()}
+BODY.match=q=>{q.L=shuf(q.pairs.map((p,k)=>[p[0],k]));q.Rr=shuf(q.pairs.map((p,k)=>[p[1],k]));q.sel=null;q.m=0;
+ const col=(a,s)=>'<div>'+a.map(([t,k])=>`<button class="opt" data-k="${k}" onclick="mSel(this,'${s}')">${t}</button>`).join('')+'</div>';
+ $('#body').innerHTML='<div class="mt">'+col(q.L,'L')+col(q.Rr,'R')+'</div>'};
+function mSel(b,s){const q=cq();if(q.done||b.classList.contains('right'))return;
+ if(!q.sel||q.sel.s===s){if(q.sel)q.sel.b.classList.remove('sel');q.sel={b,s};b.classList.add('sel');return}
+ const a=q.sel.b;a.classList.remove('sel');q.sel=null;
+ if(a.dataset.k===b.dataset.k){a.classList.add('right');b.classList.add('right');++q.m===q.pairs.length?ok():fb('good','ถูกแล้ว! จับคู่ต่อเลย')}else bad()}
+BODY.drag=q=>{q.tray=[];$('#body').innerHTML=`<div class="lbl">กระเป๋าเงิน (ลากหรือแตะเงินใส่ถาด)</div><div class="row">${q.pal.map(v=>`<span class="pick" draggable="true" ondragstart="event.dataTransfer.setData('text','${v}')" onclick="addT(${v})">${money(v)}</span>`).join('')}</div><div class="lbl">ถาดเงิน (แตะเงินในถาดเพื่อเอาออก)</div><div id="tray" class="tray" ondragover="event.preventDefault()" ondrop="event.preventDefault();addT(Number(event.dataTransfer.getData('text')))"></div><div id="sum" class="sum"></div><button class="btn" onclick="chkDrag()">✅ ตรวจคำตอบ</button><button class="btn alt" onclick="clrTray()">🗑️ ล้างถาด</button>`;drawT()};
+function drawT(){const q=cq();$('#tray').innerHTML=q.tray.length?q.tray.map((v,k)=>`<span class="pick" onclick="remT(${k})">${money(v)}</span>`).join(''):'<span class="ph">ถาดยังว่างอยู่</span>';$('#sum').textContent='ในถาดมีเงิน '+th(sum(q.tray))}
+function addT(v){const q=cq();if(q.done||!v||q.tray.length>=14)return;q.tray.push(v);drawT()}
+function remT(k){const q=cq();if(q.done)return;q.tray.splice(k,1);drawT()}
+function clrTray(){const q=cq();if(q.done)return;q.tray=[];drawT()}
+function chkDrag(){const q=cq();if(q.done)return;sum(q.tray)===q.ans?ok():bad(sum(q.tray)>q.ans?'เงินในถาดมากเกินไป':'เงินในถาดยังไม่ครบ')}
+BODY.shop=q=>{q.bk=[];$('#body').innerHTML=`<div class="wal">👛 มีเงิน <b>${th(q.M)}</b></div><div class="shelf">${ITEMS.map((it,k)=>`<button class="item" onclick="addB(${k})"><span>${it[0]}</span>${it[1]}<small>${th(it[2])}</small></button>`).join('')}</div><div class="lbl">🧺 ตะกร้า (แตะสินค้าในตะกร้าเพื่อเอาออก)</div><div id="bk" class="tray"></div><div class="inrow">ต้องจ่าย <input id="a1" inputmode="decimal" autocomplete="off"> บาท</div><div class="inrow">เงินทอน <input id="a2" inputmode="decimal" autocomplete="off"> บาท</div><button class="btn" onclick="chkShop()">✅ ตรวจคำตอบ</button>`;drawB()};
+function drawB(){const q=cq();$('#bk').innerHTML=q.bk.length?q.bk.map((k,j)=>`<button class="item" onclick="remB(${j})"><span>${ITEMS[k][0]}</span>${ITEMS[k][1]}</button>`).join(''):'<span class="ph">ตะกร้ายังว่างอยู่</span>'}
+function addB(k){const q=cq();if(q.done||q.bk.length>=6)return;q.bk.push(k);drawB()}
+function remB(j){const q=cq();if(q.done)return;q.bk.splice(j,1);drawB()}
+function chkShop(){const q=cq();if(q.done)return;
+ if([...q.bk].sort().join()!==[...q.tg].sort().join())return bad('เลือกสินค้าให้ตรงกับโจทย์ก่อนนะ');
+ const a=$('#a1').value.trim().replace(/,/g,''),b=$('#a2').value.trim().replace(/,/g,'');
+ if(a===''||b===''||isNaN(Number(a))||isNaN(Number(b)))return fb('hint','💡 กรอกทั้งเงินที่ต้องจ่ายและเงินทอนด้วยนะ');
+ if(Math.round(a*100)!==q.tot)return bad('ลองบวกราคาสินค้าใหม่อีกครั้ง');
+ if(Math.round(b*100)!==q.ch)return bad('จ่ายถูกแล้ว แต่เงินทอนยังไม่ถูก');ok()}
+BODY.led=q=>{let h='<div class="tw"><table><tr><th>วัน</th><th>รายการ</th><th>รายรับ</th><th>รายจ่าย</th><th>คงเหลือ</th></tr>';
+ q.rows.forEach((r,k)=>{h+=`<tr><td>${r.day}</td><td>${r.item}</td>`+(q.full?`<td><input id="c${k}i" inputmode="decimal" autocomplete="off"></td><td><input id="c${k}e" inputmode="decimal" autocomplete="off"></td>`:`<td class="inc">${r.inc?num(r.inc):''}</td><td class="exp">${r.exp?num(r.exp):''}</td>`)+`<td><input id="c${k}b" inputmode="decimal" autocomplete="off"></td></tr>`});
+ $('#body').innerHTML=h+'</table></div><button class="btn" onclick="chkLed()">✅ ตรวจตาราง</button>'};
+function chkLed(){const q=cq();if(q.done)return;let all=true;
+ q.rows.forEach((r,k)=>{const f=[['b',r.bal]];if(q.full)f.push(['i',r.inc||0],['e',r.exp||0]);
+  f.forEach(([c,v])=>{const el=$('#c'+k+c),x=cell(el.value),g=!isNaN(x)&&Math.round(x*100)===v;el.classList.toggle('good',g);el.classList.toggle('bad',!g);if(!g)all=false})});
+ all?ok():bad('ดูช่องสีแดงอีกครั้งนะ (ช่องที่ไม่มีเงินให้เว้นว่างหรือใส่ 0)')}
+app.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){const b=document.querySelector('#body .btn');b&&b.click()}});
+home();
+</script></body></html>
